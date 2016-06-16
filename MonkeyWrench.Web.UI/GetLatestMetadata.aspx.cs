@@ -26,12 +26,14 @@ namespace MonkeyWrench.Web.UI
 			webServiceLogin = Authentication.CreateLogin (Request);
 
 			var laneName = Request.QueryString ["laneName"];
+			var revision = Request.QueryString ["rev"];
 			var baseURL = Request.QueryString ["url"] ?? "http://storage.bos.internalx.com";
 			var updateRequest = false;
 			var step =  10;
 			var limit =  200;
 
-			var revision = getLatestRevision (webServiceLogin, laneName, step, 0, limit);
+			// If the user didn't set the revision, get the latest one.
+			revision = string.IsNullOrEmpty(revision) ? getLatestRevision (webServiceLogin, laneName, step, 0, limit) : revision;
 
 			Action handleGetLatest = () => {
 				var homePage = Page.ResolveUrl ("~/index.aspx");
